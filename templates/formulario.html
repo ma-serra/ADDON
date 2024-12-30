@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Preenchimento de Documentação{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <div class="container">
+        <h1 class="section-title">Preenchimento de Documentação</h1>
+        <div class="section">
+            <form id="documentForm">
+                <!-- Dados iniciais -->
+                <h2 class="section-title">Dados Iniciais:</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="bo">Número do BO:</label>
+                        <input type="text" id="bo" onkeyup="formatarBO(this)" maxlength="6" placeholder="Digite o número do BO">
+                    </div>
+                    <div class="form-group">
+                        <label for="versao_bo">Versão do BO:</label>
+                        <input type="number" id="versao_bo" maxlength="2" placeholder="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="ano_bo">Ano do BO:</label>
+                        <input type="number" id="ano_bo" maxlength="4" placeholder="2025">
+                    </div>
+                    <div class="form-group">
+                        <label for="delegacia">Delegacia:</label>
+                        <select id="delegacia" required>
+                            <option value="DEL. SEC. DRACENA PLANTÃO">DEL. SEC. DRACENA PLANTÃO</option>
+                            <option value="DEL. POL. OURO VERDE">DEL. POL. OURO VERDE</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Dados Pessoais -->
+                <h2 class="section-title">Dados Pessoais:</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rg">RG:</label>
+                        <input type="text" id="rg" maxlength="9" oninput="formatarRG(this)">
+                    </div>
+                    <div class="form-group">
+                        <label for="cpf">CPF:</label>
+                        <input type="text" id="cpf" maxlength="14" oninput="formatarCPF(this)">
+                    </div>
+                    <div class="form-group">
+                        <label for="nascimento">Data de Nascimento:</label>
+                        <input type="date" id="nascimento">
+                    </div>
+                    <div class="form-group">
+                        <label for="mae">Nome da Mãe:</label>
+                        <input type="text" id="mae">
+                    </div>
+                    <div class="form-group">
+                        <label for="pai">Nome do Pai:</label>
+                        <input list="paiOptions" id="pai">
+                        <datalist id="paiOptions">
+                            <option value="NÃO CONSTA">
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="naturalidade">Naturalidade:</label>
+                        <input type="text" id="naturalidade">
+                    </div>
+                    <div class="form-group">
+                        <label for="endereco">Endereço:</label>
+                        <input type="text" id="endereco" placeholder="Endereço, nº, Bairro, Cidade - Estado">
+                    </div>
+                    <div class="form-group">
+                        <label for="instrucao">Grau de Instrução:</label>
+                        <input list="instrucaoOptions" id="instrucao" placeholder="Selecione o nível de estudo">
+                        <datalist id="instrucaoOptions">
+                            <option value="Analfabeto">
+                            <option value="1° GRAU INCOMPLETO">
+                            <option value="1° GRAU COMPLETO">
+                            <option value="2° GRAU INCOMPLETO">
+                            <option value="2° GRAU COMPLETO">
+                            <option value="SUPERIOR INCOMPLETO">
+                            <option value="SUPERIOR COMPLETO">
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado_civil">Estado Civil:</label>
+                        <input list="estado_civilOptions" id="estado_civil" placeholder="Selecione o estado civil">
+                        <datalist id="estado_civilOptions">
+                            <option value="SOLTEIRO">
+                            <option value="CASADO">
+                            <option value="DIVORCIADO">
+                            <option value="VIÚVO">
+                            <option value="UNIÃO ESTÁVEL">
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="profissao">Profissão:</label>
+                        <input type="text" id="profissao">
+                    </div>
+                </div>
+
+                <!-- Características Físicas -->
+                <h2 class="section-title">Características Físicas:</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="cutis">Cútis:</label>
+                        <input type="text" id="cutis">
+                    </div>
+                    <div class="form-group">
+                        <label for="olhos">Olhos:</label>
+                        <input type="text" id="olhos">
+                    </div>
+                    <div class="form-group">
+                        <label for="cabelos">Cabelos:</label>
+                        <input type="text" id="cabelos">
+                    </div>
+                    <div class="form-group">
+                        <label for="compleicao">Compleição:</label>
+                        <input type="text" id="compleicao">
+                    </div>
+                    <div class="form-group">
+                        <label for="barba">Barba:</label>
+                        <input type="text" id="barba">
+                    </div>
+                    <div class="form-group">
+                        <label for="tatuagem">Tatuagem:</label>
+                        <input type="text" id="tatuagem">
+                    </div>
+                    <div class="form-group">
+                        <label for="altura">Altura em centímetros:</label>
+                        <input type="text" id="altura" oninput="validarNumero(this)">
+                    </div>
+                </div>
+
+                <!-- Dados Processuais -->
+                <h2 class="section-title">Dados Processuais:</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="vara">Vara:</label>
+                        <input type="number" id="vara">
+                    </div>
+                    <div class="form-group">
+                        <label for="cv_cr">Civil / Criminal:</label>
+                        <input list="cv_crOptions" id="cv_cr">
+                        <datalist id="cv_crOptions">
+                            <option value="CIVIL">
+                            <option value="CRIMINAL">
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="comarca">Comarca:</label>
+                        <input type="text" id="comarca">
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo">Tipo:</label>
+                        <input list="tipoOptions" id="tipo" placeholder="Selecione ou digite o tipo da prisão">
+                        <datalist id="tipoOptions">
+                            <option value="MANDADO DE PRISÃO PREVENTIVA">
+                            <option value="MANDADO DE PRISÃO EM REGIME ABERTO">
+                            <option value="MANDADO DE PRISÃO EM REGIME SEMIABERTO">
+                            <option value="MANDADO DE PRISÃO EM REGIME FECHADO">
+                            <option value="FLAGRANTE">
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="processo">Processo:</label>
+                        <input type="text" id="processo" oninput="formatarProcesso(this)">
+                    </div>
+                </div>
+
+                <!-- Dados de Comunicação -->
+                <h2 class="section-title">Dados de Comunicação:</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="of1">Ofício 1:</label>
+                        <input type="text" id="of1">
+                    </div>
+                    <div class="form-group">
+                        <label for="of2">Ofício 2:</label>
+                        <input type="text" id="of2">
+                    </div>
+                    <div class="form-group">
+                        <label for="msg">Mensagem:</label>
+                        <input type="text" id="msg">
+                    </div>
+                </div>
+
+                <!-- Formato do Documento -->
+                <div class="format-options">
+                    <h3>Formato do Documento:</h3>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="documentFormat" value="docx" checked onclick="setDocumentFormat('docx')">
+                            DOCX
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="documentFormat" value="pdf" onclick="setDocumentFormat('pdf')">
+                            PDF
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Opções de Arquivo -->
+                <div class="file-options">
+                    <h3>Selecione os documentos a serem preenchidos:</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="documentos" value="Bonequinho.docx">
+                            Bonequinho
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="documentos" value="Cumprimento.docx">
+                            Cumprimento
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="documentos" value="Guia de Encaminhamento de Preso.docx">
+                            Guia de Encaminhamento
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="documentos" value="Ofício Cadeia.docx">
+                            Ofício Cadeia
+                        </label>
+                    </div>
+                </div>
+
+                <div class="file-input">
+                    <h3>Ou selecione modelos manualmente:</h3>
+                    <input type="file" id="modelo" accept=".docx,.doc" multiple>
+                    <small>*Opcional - Selecione um ou mais arquivos para processar</small>
+                </div>
+
+                <div class="buttons">
+                    <button type="submit">Gerar Documento</button>
+                    <button type="reset">Limpar Campos</button>
+                </div>
+            </form>
+        </div>
+        <div id="log">
+            <p>Sistema iniciado. Aguardando dados...</p>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{% static 'libs/lodash.min.js' %}"></script>
+    <script src="{% static 'libs/jszip.min.js' %}"></script>
+    <script src="{% static 'libs/jszip-utils.min.js' %}"></script>
+    <script src="{% static 'libs/docxtemplater.js' %}"></script>
+    <script src="{% static 'libs/FileSaver.min.js' %}"></script>
+    <script src="{% static 'js/formatters.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+{% else %}
+    <div class="text-center">
+        <p class="text-lg">Por favor, faça login para acessar o sistema.</p>
+        <a href="{% url 'login' %}" class="inline-block mt-4 bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700">
+            Fazer Login
+        </a>
+    </div>
+{% endif %}
+{% endblock %}

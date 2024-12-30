@@ -1,0 +1,16 @@
+asgiref==3.8.1
+colorama==0.4.6
+dj-database-url==2.1.0
+Django==5.0
+docx2pdf==0.1.8; platform_system == "Windows"
+gunicorn==21.2.0
+packaging==24.2
+psycopg2-binary==2.9.9
+python-docx==1.1.1
+python-dotenv==1.0.0
+pywin32==308; platform_system == "Windows"
+sqlparse==0.5.3
+tqdm==4.67.1
+typing_extensions==4.9.0
+tzdata==2024.2
+whitenoise==6.6.0
